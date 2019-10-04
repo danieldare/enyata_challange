@@ -1,7 +1,10 @@
+
 export default class BaseService {
     constructor(model) {
       this.model = model;
     }
+
+    
   
     /**
      * Get a list of resources
@@ -12,8 +15,7 @@ export default class BaseService {
      */
     async getAll(options = {}) {
       const { plain, ...option } = options;
-      const rows = await this.model.findAll(option);
-  
+      const rows = await this.model.findAll({attributes: {exclude: ['userId']}, where: options});
       return (plain === true) ? rows.map(row => row.get({ plain })) : rows;
     }
   
@@ -41,7 +43,7 @@ export default class BaseService {
      * @memberof BaseService
      */
     async find(where, options = {}) {
-      const row = await this.model.findOne({ where });
+      const row = await this.model.findOne({ attributes: {exclude: ['userId']} , where });
   
       const { plain } = options;
       return (row && plain === true) ? row.get({ plain }) : row;
@@ -89,4 +91,7 @@ export default class BaseService {
     async delete(id) {
       return this.model.destroy({ where: { id } });
     }
+
+
+    
   }

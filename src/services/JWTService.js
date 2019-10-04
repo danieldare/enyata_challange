@@ -41,8 +41,7 @@ export default class JWTService {
    * @returns {object|boolean} Decoded token payload or false for invalid token
    * @memberof JWTService
    */
-  static verify(token) {
-    const publicKEY = process.env.PUBLIC_KEY
+  static verifyToken(token) {
     const options = {
       issuer:  "Mysoft corp",
       subject:  "subject",
@@ -51,7 +50,7 @@ export default class JWTService {
     };
 
     try {
-      return jwt.verify(token, publicKEY, options);
+      return jwt.verify(token, process.env.PRIVATE_KEY , options);
     } catch (err) {
       return false;
     }
