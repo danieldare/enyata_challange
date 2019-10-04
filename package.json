@@ -1,0 +1,44 @@
+{
+  "name": "enyata_challange",
+  "version": "1.0.0",
+  "description": "A Restful API using Node js and Redis",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "DEBUG=food:* nodemon --exec babel-node src/index.js",
+    "db:migrate": "sequelize db:migrate",
+    "db:refresh": "yarn db:reset && yarn db:migrate",
+    "db:reset": "sequelize db:migrate:undo:all"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danieldare/enyata_challange.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danieldare/enyata_challange/issues"
+  },
+  "homepage": "https://github.com/danieldare/enyata_challange#readme",
+  "dependencies": {
+    "@babel/runtime": "^7.4.5",
+    "axios": "^0.19.0",
+    "debug": "^4.1.1",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "http-errors": "^1.7.3",
+    "morgan": "^1.9.1",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.19.2",
+    "sequelize-cli": "^5.5.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/node": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "babel-plugin-module-resolver": "^3.2.0"
+  }
+}
