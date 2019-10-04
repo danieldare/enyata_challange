@@ -5,7 +5,9 @@ const routes = (app) => {
         res.send("Hello from here");
     })
 
-    app.get("/api/v1/register", UserController.register)
+    app.post("/api/v1/register", UserController.register);
+    app.post("/api/v1/login", UserController.login);
+
 }
 
 
