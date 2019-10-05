@@ -17,7 +17,8 @@ async function validateUser(req, res, next) {
       req.user = data.dataValues;
       return next();
     } catch (error) {
-      return Response.errorResponse(res, "Something went wrong", 401);
+        console.log(error)
+      return Response.errorResponse(res, "Unauthorized User", 401);
     }
   }
 

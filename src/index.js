@@ -4,15 +4,13 @@ import logger from "morgan";
 import createError from "http-errors";
 import debuger from "debug";
 import dotenv from "dotenv";
-import { messages } from "@helpers/constants";
+
 
 dotenv.config();
 
 const debug = debuger("Food:api");
 
 const app  = express();
-
-const { NOT_FOUND } = messages;
 
 
 app.use(logger('dev'));
@@ -22,7 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 routes(app);
 
 // catch 404 and forward to exception handler
-app.use((req, res, next) => next(createError(404, NOT_FOUND)));
+app.use((req, res, next) => next(createError(404,`Not Found. Use /api/v1} to access the api resource`)));
 
 
 const port = process.env.PORT || 4400;

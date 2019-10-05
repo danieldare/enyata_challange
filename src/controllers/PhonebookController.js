@@ -1,6 +1,13 @@
 
 import Response from "../helpers/response";
 import PhonebookService from "../services/PhonebookService";
+import redis from "redis";
+
+const client = redis.createClient();
+
+client.on("connect", () => {
+  console.log("Connected to redis")
+})
 
 class PhonebookController{
     /**
@@ -12,20 +19,34 @@ class PhonebookController{
    * @memberof PhonebookController
    */
   static async getAllContacts(req, res) {
+    // key to store results in Redis store
+    const contactsRedisKey = `user:contacts-${req.user.id}`;
+
     try{
       const { user } = req; 
-      const contacts = await PhonebookService.getAll({ userId: user.id});
-      if(!contacts){
-        return Response.errorResponse(res, "No Contact Added yet", 404);
-      }
-      Response.successResponse(res, { contacts }, "Contacts retrieved successfully");
+      client.get(contactsRedisKey, async (err, obj) => {
+        if(obj){
+          Response.successResponse(res,  JSON.parse(obj) , "Contacts retrieved successfully");
+        }else{
+
+            const contacts = await PhonebookService.getAll({ userId: user.id});
+            if(!contacts){
+              return Response.errorResponse(res, "No Contact Added yet", 404);
+            }
+            // Save the  API response in Redis store,  data expire time in 3600 seconds, it means one hour
+            client.setex(contactsRedisKey, 3600, JSON.stringify(contacts))
+            Response.successResponse(res, { contacts }, "Contacts retrieved successfully");
+
+        }
+      })
     }catch(err){
+      console.log(err)
       Response.errorResponse(res, "Something went wrong!");
     }
   }
 
   /**
-   * Fetch a single article by `id`
+   * Fetch a single contact by `id`
    *
    * @param {object} req - Express Request object
    * @param {object} res - Express Response object
